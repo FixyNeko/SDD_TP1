@@ -1,0 +1,3 @@
+
+
+void initList(list * list);
