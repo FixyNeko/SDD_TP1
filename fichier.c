@@ -2,7 +2,7 @@
 
 void LectureFichier(char * NomFichier, liste_t * liste) {
 	FILE	*fichier;
-	char	texte[TAILLE_TEXTE];
+	char	texte[TAILLE_TEXTE+1] = {0};
 	int		LongueurTexte;
 
 	fichier = fopen(NomFichier, "r");
@@ -14,8 +14,9 @@ void LectureFichier(char * NomFichier, liste_t * liste) {
 			fscanf(fichier, "%d %d ", &(message->DebutValidite), &(message->FinValidite));
 			fgets(texte, TAILLE_TEXTE, fichier);
 			suprRN(texte, TAILLE_TEXTE);
+			texte[TAILLE_TEXTE] = '\0';
 			LongueurTexte = strlen(texte);
-			message->texte = (char*) malloc(LongueurTexte * sizeof(char));
+			message->texte = (char *) malloc((LongueurTexte+1) * sizeof(char));
 			strcpy(message->texte, texte);
 			InsertionApres(message, RecherchePrec(liste, message->DebutValidite));
 		}
@@ -29,7 +30,7 @@ void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 		if(liste->premier != NULL) {
 			message_t * cour = liste->premier;
 			while(cour != NULL) {
-				fprintf(fichier, "%d %d %s", cour->DebutValidite, cour->FinValidite, cour ->texte);
+				fprintf(fichier, "%d %d %s", cour->DebutValidite, cour->FinValidite, cour->texte);
 				if(cour->suivant != NULL) {
 					fputc('\n', fichier);
 				}
@@ -41,8 +42,10 @@ void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 }
 
 void suprRN(char* s, int tailleMax) {
-	int i = 0;
-	while(i < tailleMax && (s[i] != '\n' && s[i] != '\r'))
+	int i;
+	i = 0;
+	while(i < tailleMax && (s[i] != '\n' && s[i] != '\r')) {
 		i++;
+	}
 	s[i] = '\0';
 }

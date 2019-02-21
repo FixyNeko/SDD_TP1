@@ -26,5 +26,10 @@ int main(int argc, char ** argv) {
 	MessagesContenantMotif(&liste, " le Tp de S");
 	SauvegardeLCH(NomFichierEcriture, &liste);
 
+	while(liste.premier != NULL) {
+		SupprimerCellule(&(liste.premier));
+	}
+	
+
 	return 0;
 }

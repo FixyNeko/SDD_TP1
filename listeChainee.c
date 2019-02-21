@@ -41,7 +41,10 @@ void SupprimerCellule(message_t ** prec) {
 	message_t *cour = *prec;
 	if(cour != NULL) {
 		*prec = cour->suivant;
-		free(cour->texte);
+		if(cour->texte != NULL) {
+			free(cour->texte);
+			cour->texte = NULL;
+		}
 		free(cour);
 	}
 }
