@@ -14,10 +14,13 @@ int main(int argc, char ** argv) {
 		NomFichierLecture = argv[1];
 		NomFichierEcriture = argv[2];
 	}
+	else {
+		return 1;
+	}
 
 	InitLCH(&liste);
 	LectureFichier(NomFichierLecture, &liste);
-	//AfficherMessagesValides(&liste);
+	AfficherMessagesValides(&liste);
 	SupprimerMessagesObsoletes(&liste);
 	ModifierDateDebut(&liste, 20190207, 66006600);
 	MessagesContenantMotif(&liste, " le Tp de S");

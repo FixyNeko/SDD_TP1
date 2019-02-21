@@ -1,9 +1,8 @@
-#ifndef DEF_LISTECHAINEE
-#define DEF_LISTECHAINEE
+#ifndef LISTE_CHAINEE_H
+#define LISTE_CHAINEE_H
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include <string.h>
 
 #define TAILLE_TEXTE 100
@@ -27,11 +26,5 @@ void InsertionApres(message_t * message, message_t ** prec);
 message_t ** RecherchePrec(liste_t * liste, int valeur);
 void SupprimerCellule(message_t ** prec);
 void ParcoursLCH(liste_t * liste);
-void AfficherMessagesValides(liste_t * liste);
-int RecupererDateSysteme();
-void SupprimerMessagesObsoletes(liste_t * liste);
-void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate);
-void MessagesContenantMotif(liste_t * liste, char * motif);
-int ContientMotif(char * s, char * motif);
 
-#endif
+#endif // LISTE_CHAINEE_H

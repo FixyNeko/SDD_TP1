@@ -1,16 +1,20 @@
 #include "fichier.h"
 
 void LectureFichier(char * NomFichier, liste_t * liste) {
-	FILE * fichier = fopen(NomFichier, "r");
+	FILE	*fichier;
+	char	texte[TAILLE_TEXTE];
+	int		LongueurTexte;
+
+	fichier = fopen(NomFichier, "r");
+
 	if(fichier != NULL) {
-		char texte[TAILLE_TEXTE];
 
 		while(0 == feof(fichier)) {
 			message_t * message = (message_t *) malloc(sizeof(message_t));
 			fscanf(fichier, "%d %d ", &(message->DebutValidite), &(message->FinValidite));
 			fgets(texte, TAILLE_TEXTE, fichier);
 			suprRN(texte, TAILLE_TEXTE);
-			int LongueurTexte = strlen(texte);
+			LongueurTexte = strlen(texte);
 			message->texte = (char*) malloc(LongueurTexte * sizeof(char));
 			strcpy(message->texte, texte);
 			InsertionApres(message, RecherchePrec(liste, message->DebutValidite));
