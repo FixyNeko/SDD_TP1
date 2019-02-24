@@ -36,6 +36,7 @@ void SupprimerMessagesObsoletes(liste_t * liste) {
 		while(cour != NULL) {
 			if(cour->FinValidite < date) {
 				SupprimerCellule(prec);
+				cour = (*prec)->suivant;
 			}
 			prec = &(cour->suivant);
 			cour = cour->suivant;

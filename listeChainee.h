@@ -26,5 +26,6 @@ void InsertionApres(message_t * message, message_t ** prec);
 message_t ** RecherchePrec(liste_t * liste, int valeur);
 void SupprimerCellule(message_t ** prec);
 void ParcoursLCH(liste_t * liste);
+void SupprimerLCH(liste_t * liste);
 
 #endif // LISTE_CHAINEE_H

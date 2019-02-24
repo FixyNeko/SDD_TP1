@@ -4,7 +4,6 @@ void InitLCH(liste_t * liste) {
 	if(liste == NULL) {
 		exit(EXIT_FAILURE);
 	}
-	liste->premier = (message_t *) malloc(sizeof(message_t));
 	liste->premier = NULL;
 }
 
@@ -40,7 +39,7 @@ message_t **RecherchePrec(liste_t * liste, int valeur) {
 void SupprimerCellule(message_t ** prec) {
 	message_t *cour = *prec;
 	if(cour != NULL) {
-		*prec = cour->suivant;
+		*prec = (*prec)->suivant;
 		if(cour->texte != NULL) {
 			free(cour->texte);
 			cour->texte = NULL;
@@ -58,4 +57,12 @@ void ParcoursLCH(liste_t * liste) {
 			cour = cour->suivant;
 		}
 	}
+}
+
+void SupprimerLCH(liste_t * liste) {
+	while(liste->premier != NULL) {
+		SupprimerCellule(&(liste->premier));
+	}
+
+	free(liste->premier);
 }

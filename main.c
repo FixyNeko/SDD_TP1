@@ -25,11 +25,7 @@ int main(int argc, char ** argv) {
 	ModifierDateDebut(&liste, 20190207, 66006600);
 	MessagesContenantMotif(&liste, " le Tp de S");
 	SauvegardeLCH(NomFichierEcriture, &liste);
-
-	while(liste.premier != NULL) {
-		SupprimerCellule(&(liste.premier));
-	}
-	
+	SupprimerLCH(&liste);
 
 	return 0;
 }
