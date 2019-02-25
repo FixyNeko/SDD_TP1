@@ -8,7 +8,7 @@ void InitLCH(liste_t * liste) {
 }
 
 message_t *CreerCellule(int DebutValidite, int FinValidite, char * texte) {
-	message_t *cellule = (message_t *) malloc(sizeof(message_t));
+	message_t * cellule = (message_t *) malloc(sizeof(message_t));
 	if(cellule == NULL) {
 		exit(EXIT_FAILURE);
 	}
@@ -25,8 +25,8 @@ void InsertionApres(message_t * message, message_t ** prec) {
 }
 
 message_t **RecherchePrec(liste_t * liste, int valeur) {
-	message_t **prec = &(liste->premier);
-	message_t *cour = liste->premier;
+	message_t ** prec = &(liste->premier);
+	message_t  * cour = liste->premier;
 	while(cour != NULL &&
 			cour->DebutValidite < valeur) {
 		prec = &(cour->suivant);
@@ -37,25 +37,19 @@ message_t **RecherchePrec(liste_t * liste, int valeur) {
 }
 
 void SupprimerCellule(message_t ** prec) {
-	message_t *cour = *prec;
+	message_t * cour = *prec;
 	if(cour != NULL) {
 		*prec = (*prec)->suivant;
-		if(cour->texte != NULL) {
-			free(cour->texte);
-			cour->texte = NULL;
-		}
+		free(cour->texte);
 		free(cour);
 	}
 }
 
 void ParcoursLCH(liste_t * liste) {
-	message_t	*cour;
-	if(liste->premier != NULL) {
-		cour = liste->premier;
-		while(cour != NULL) {
-			printf("%d %d %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
-			cour = cour->suivant;
-		}
+	message_t * cour = liste->premier;
+	while(cour != NULL) {
+		printf("%d %d %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
+		cour = cour->suivant;
 	}
 }
 

@@ -15,15 +15,16 @@ int main(int argc, char ** argv) {
 		NomFichierEcriture = argv[2];
 	}
 	else {
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 
 	InitLCH(&liste);
 	LectureFichier(NomFichierLecture, &liste);
 	AfficherMessagesValides(&liste);
 	SupprimerMessagesObsoletes(&liste);
+	ParcoursLCH(&liste);
 	ModifierDateDebut(&liste, 20190207, 66006600);
-	MessagesContenantMotif(&liste, " le Tp de S");
+	MessagesContenantMotif(&liste, "Tp de");
 	SauvegardeLCH(NomFichierEcriture, &liste);
 	SupprimerLCH(&liste);
 
