@@ -1,15 +1,27 @@
 #include "fichier.h"
 
+/**************************************************************************************************/
+/*																								  */
+/* LectureFichier		construit une liste chainee de messages depuis un fichier de messages	  */
+/*																								  */
+/* En entrée:	NomFichier le nom du fichier à lire depuis le repertoire de l'éxécutable		  */
+/*				liste un pointeur sur une structure liste initialisée							  */
+/*																								  */
+/* En sortie:	liste est une liste chainée des messages du fichier d'entrée					  */
+/*																								  */
+/**************************************************************************************************/
+
 void LectureFichier(char * NomFichier, liste_t * liste) {
 	FILE	*fichier;
 	char	texte[TAILLE_TEXTE+1] = {0};
 	int		LongueurTexte;
+	message_t * message;
 
 	fichier = fopen(NomFichier, "r");
 
 	if(fichier != NULL) {
 		while(0 == feof(fichier)) {
-			message_t * message = (message_t *) malloc(sizeof(message_t));
+			message = (message_t *) malloc(sizeof(message_t));
 
 			fscanf(fichier, "%d %d ", &(message->DebutValidite), &(message->FinValidite));
 			fgets(texte, TAILLE_TEXTE, fichier);
@@ -27,6 +39,17 @@ void LectureFichier(char * NomFichier, liste_t * liste) {
 		fclose(fichier);
 	}
 }
+
+/**************************************************************************************************/
+/*																								  */
+/* SauvegardeLCH		construit un fichier de messages depuis une liste chainee de messages	  */
+/*																								  */
+/* En entrée:	NomFichier le nom du fichier où écrire depuis le repertoire de l'éxécutable		  */
+/*				liste un pointeur sur une structure liste										  */
+/*																								  */
+/* En sortie:	un fichier representant la liste chainée est crée								  */
+/*																								  */
+/**************************************************************************************************/
 
 void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 	FILE		* fichier = fopen(NomFichier, "w");
@@ -46,6 +69,17 @@ void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 		fclose(fichier);
 	}
 }
+
+/**************************************************************************************************/
+/*																								  */
+/* suprRN		supprime les caractères de retour à la ligne en fin de chaine de caracteres		  */
+/*																								  */
+/* En entrée:	s une chaine de caracteres														  */
+/*				taillemax la taille maximum de s (sans compter la fin de chaine '\0')			  */
+/*																								  */
+/* En sortie:	s sans '\r' ou '\n'																  */
+/*																								  */
+/**************************************************************************************************/
 
 void suprRN(char* s, int tailleMax) {
 	int i = 0;
