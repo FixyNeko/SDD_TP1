@@ -9,9 +9,12 @@
 /**************************************************************************************************/
 
 void InitLCH(liste_t * liste) {
+	/* on teste si la liste a bien été allouée précédament */
 	if(liste == NULL) {
 		exit(EXIT_FAILURE);
 	}
+
+	/* la liste est vide, le pointeur de tete doit pointer sur NULL */
 	liste->premier = NULL;
 }
 
@@ -26,15 +29,15 @@ void InitLCH(liste_t * liste) {
 /**************************************************************************************************/
 
 message_t *CreerCellule(int DebutValidite, int FinValidite, char * texte) {
-	message_t * cellule = (message_t *) malloc(sizeof(message_t));
+	message_t * cellule = (message_t *) malloc(sizeof(message_t)); /* adresse de la cellule crée */
 
-	if(cellule == NULL) {
+	if(cellule == NULL) { /* on teste si l'allocation s'est bien passé */
 		exit(EXIT_FAILURE);
 	}
 	cellule->DebutValidite = DebutValidite;
 	cellule->FinValidite = FinValidite;
 	cellule->texte = texte;
-	cellule->suivant = NULL;
+	cellule->suivant = NULL; /* par defaut, la cellule n'a pas de suivant */
 	return cellule;
 }
 
@@ -65,11 +68,12 @@ void InsertionApres(message_t * message, message_t ** prec) {
 /**************************************************************************************************/
 
 message_t **RecherchePrec(liste_t * liste, int valeur) {
-	message_t ** prec = &(liste->premier);
-	message_t  * cour = liste->premier;
+	message_t  * cour = liste->premier; /* pointeur sur le message traité */
+	message_t ** prec = &(liste->premier); /* pointeur sur son précedant */
 	
-	while(cour != NULL &&
-			cour->DebutValidite < valeur) {
+	/* tant que le message n'est pas apres la date cherchée et qu'il reste des messages dans
+	la liste, on teste le message suivant*/
+	while(cour != NULL && cour->DebutValidite < valeur) {
 		prec = &(cour->suivant);
 		cour = cour->suivant;
 	}
@@ -86,12 +90,12 @@ message_t **RecherchePrec(liste_t * liste, int valeur) {
 /**************************************************************************************************/
 
 void SupprimerCellule(message_t ** prec) {
-	message_t * cour = *prec;
+	message_t * cour = *prec; /* pointeur sur le message à supprimer */
 
 	if(cour != NULL) {
 		*prec = (*prec)->suivant;
-		free(cour->texte);
-		free(cour);
+		free(cour->texte); /* on libere d'abord le texte du message */
+		free(cour); /* puis on libere le message */
 	}
 }
 
@@ -104,10 +108,10 @@ void SupprimerCellule(message_t ** prec) {
 /**************************************************************************************************/
 
 void ParcoursLCH(liste_t * liste) {
-	message_t * cour = liste->premier;
+	message_t * cour = liste->premier; /* pointeur sur le message traité */
 
-	while(cour != NULL) {
-		printf("%d %d %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
+	while(cour != NULL) { /* tant qu'il reste des messages à afficher */
+		printf("%d %d %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte); /* on affiche */
 		cour = cour->suivant;
 	}
 }
@@ -121,7 +125,7 @@ void ParcoursLCH(liste_t * liste) {
 /**************************************************************************************************/
 
 void SupprimerLCH(liste_t * liste) {
-	while(liste->premier != NULL) {
-		SupprimerCellule(&(liste->premier));
+	while(liste->premier != NULL) { /* tant qu'il reste des messages dans la liste chainée */
+		SupprimerCellule(&(liste->premier)); /* on supprime le premier message */
 	}
 }

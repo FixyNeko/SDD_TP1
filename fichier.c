@@ -12,31 +12,35 @@
 /**************************************************************************************************/
 
 void LectureFichier(char * NomFichier, liste_t * liste) {
-	FILE	*fichier;
-	char	texte[TAILLE_TEXTE+1] = {0};
-	int		LongueurTexte;
-	message_t * message;
+	FILE	*fichier; /* descripteur de fichier de lecture */
+	char	texte[TAILLE_TEXTE+1] = {0}; /* variable temporaire qui stocke des textes avant traitement */
+	int		LongueurTexte; /* variable temporaire contenant la taille du texte */
+	message_t * message; /* pointeur temporaire de message en construction */
 
-	fichier = fopen(NomFichier, "r");
+	fichier = fopen(NomFichier, "r"); /* on ouvre le fichier en lecture seule */
 
-	if(fichier != NULL) {
-		while(0 == feof(fichier)) {
-			message = (message_t *) malloc(sizeof(message_t));
+	if(fichier != NULL) { /* si le fichier est valide */
+		while(0 == feof(fichier)) { /* tant qu'ona pas atteint la fin du fichier */
+			message = (message_t *) malloc(sizeof(message_t)); /* un nouveau message peut etre lu */
 
+			/* on lit les dates de debut et fin */
 			fscanf(fichier, "%d %d ", &(message->DebutValidite), &(message->FinValidite));
+			/* on lit le reste de la ligne jusqu'à atteindre un retour à la ligne */
 			fgets(texte, TAILLE_TEXTE, fichier);
-			suprRN(texte, TAILLE_TEXTE);
-			texte[TAILLE_TEXTE] = '\0';
+			/* on supprime le retour à la ligne du message */
+			suprRN(texte, TAILLE_TEXTE+1);
 
 			LongueurTexte = strlen(texte);
 
+			/* on alloue juste la place necessaire pour stocker le texte en mémoire */
 			message->texte = (char *) malloc((LongueurTexte+1) * sizeof(char));
 			strcpy(message->texte, texte);
 
+			/* on peut ajouter le message au bon endroit dans la liste */
 			InsertionApres(message, RecherchePrec(liste, message->DebutValidite));
 		}
 
-		fclose(fichier);
+		fclose(fichier); /* on pense à fermer le fichier puisqu'on a fini de l'utiliser */
 	}
 }
 
@@ -52,21 +56,25 @@ void LectureFichier(char * NomFichier, liste_t * liste) {
 /**************************************************************************************************/
 
 void SauvegardeLCH(char * NomFichier, liste_t * liste) {
-	FILE		* fichier = fopen(NomFichier, "w");
-	message_t	* cour = liste->premier;
+	FILE		* fichier; /* descripteur de fichier en écriture */
+	message_t	* cour; /* pointeur sur le message traité */
 
-	if(fichier != NULL) {
-		while(cour != NULL) {
+	fichier = fopen(NomFichier, "w"); /* on ouvre un nouveau fichier en écriture */
+	cour = liste->premier; /* le premier element à traiter est l'element pointé par la tete de liste */
+
+	if(fichier != NULL) { /* si le fichier est valide */
+		while(cour != NULL) { /* tant que l'element à traiter est un message */
+			/* on imprime dans le fichier dans le bon format les informations du message */
 			fprintf(fichier, "%d %d %s", cour->DebutValidite, cour->FinValidite, cour->texte);
-
+			/* si le message a un suivant, on ajoute une ligne au fichier */
 			if(cour->suivant != NULL) {
 				fputc('\n', fichier);
 			}
-
+			/* on passe à l'élément suivant */
 			cour = cour->suivant;
 		}
 
-		fclose(fichier);
+		fclose(fichier); /* on pense à fermer le fichier */
 	}
 }
 
@@ -83,9 +91,10 @@ void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 
 void suprRN(char* s, int tailleMax) {
 	int i = 0;
-	
-	while(i < tailleMax && (s[i] != '\n' && s[i] != '\r')) {
+	/* on cherche le premier caractere de retour à la ligne de la chaine de caracteres */
+	while(i < tailleMax && (s[i] != '\n' && s[i] != '\r' && s[i] != '\0')) {
 		i++;
 	}
+	/* on le remplace par un caractere de fin de chaine */
 	s[i] = '\0';
 }

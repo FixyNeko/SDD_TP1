@@ -2,26 +2,6 @@
 
 /**************************************************************************************************/
 /*																								  */
-/* AfficherMessagesValides		affiche les messages valides sur la sortie standard				  */
-/*																								  */
-/*En entrée:	liste un pointeur sur une structure liste initialisée							  */
-/*																								  */
-/**************************************************************************************************/
-
-void AfficherMessagesValides(liste_t * liste) {
-	message_t * cour = liste->premier;
-	int			date = RecupererDateSysteme();
-
-	while(cour != NULL) {
-		if(cour->DebutValidite < date && cour->FinValidite > date) {
-			printf("%d %d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
-		}
-		cour = cour->suivant;
-	}
-}
-
-/**************************************************************************************************/
-/*																								  */
 /* RecupererDateSysteme		retourne la date au moment où la fonction est appelée				  */
 /*																								  */
 /*En sortie:	La valeur retournée est un entier sous la forme aaaammjj						  */
@@ -29,15 +9,41 @@ void AfficherMessagesValides(liste_t * liste) {
 /**************************************************************************************************/
 
 int RecupererDateSysteme() {
-	char 		buffer[TAILLE_DATE];
-	int 		date;
+	char 		buffer[TAILLE_DATE]; /* stocke la date sous forme de texte */
+	int 		date; /* variable resultat */
 	time_t		t = time(NULL);
-	struct tm * tm = localtime(&t);
+	struct tm * tm = localtime(&t); /* on recupere la date avec une librairie C */
 
+	/* on veut la date sous le format aaammjj: la documentation de la librairie
+	nous indique d'utiliser ce formatage */
 	strftime(buffer, TAILLE_DATE, "%Y%m%d", tm);
 
+	/* la date retournée par la librairie est une chaine de caracteres; on la convertit en entier */
 	date = atoi(buffer);
 	return date;
+}
+
+/**************************************************************************************************/
+/*																								  */
+/* AfficherMessagesValides		affiche les messages valides sur la sortie standard				  */
+/*																								  */
+/*En entrée:	liste un pointeur sur une structure liste initialisée							  */
+/*																								  */
+/**************************************************************************************************/
+
+void AfficherMessagesValides(liste_t * liste) {
+	message_t * cour = liste->premier; /* pointeur sur le message traité */
+	int			date = RecupererDateSysteme(); /* la date au moment où la fonction est appelée */
+
+	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
+		/* si le message est valide */
+		if(cour->DebutValidite < date && cour->FinValidite > date) {
+			/* on l'affiche avec ses dates de debut et fin */
+			printf("%d %d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
+		}
+		/* on passe au message suivant */
+		cour = cour->suivant;
+	}
 }
 
 /**************************************************************************************************/
@@ -50,17 +56,17 @@ int RecupererDateSysteme() {
 /**************************************************************************************************/
 
 void SupprimerMessagesObsoletes(liste_t * liste) {
-	message_t  * cour = liste->premier;
-	message_t ** prec = &(liste->premier);
-	int			 date = RecupererDateSysteme();
+	message_t  * cour = liste->premier; /* pointeur sur le message traité */
+	message_t ** prec = &(liste->premier); /* pointeur sur son precedent */
+	int			 date = RecupererDateSysteme(); /* la date au moment où la fonction est appelée */
 
-	while(cour != NULL) {
-		if(cour->FinValidite < date) {
-			cour = cour->suivant;
-			SupprimerCellule(prec);
+	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
+		if(cour->FinValidite < date) { /* si le message n'est plus valide */
+			cour = cour->suivant; /* le message courant est le suivant, mais le precedant ne change pas */
+			SupprimerCellule(prec); /* on supprime le message invalide de la liste chainée */
 		}
-		else {
-			prec = &(cour->suivant);
+		else { /* si il est valide */
+			prec = &(cour->suivant); /* on passe au message suivant */
 			cour = cour->suivant;
 		}
 	}
@@ -78,11 +84,11 @@ void SupprimerMessagesObsoletes(liste_t * liste) {
 /**************************************************************************************************/
 
 void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate) {
-	message_t * cour = liste->premier;
+	message_t * cour = liste->premier; /* pointeur sur le message traité */
 
-	while(cour != NULL) {
-		if(cour->DebutValidite == DateInitiale) {
-			cour->DebutValidite = NouvelleDate;
+	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
+		if(cour->DebutValidite == DateInitiale) { /* si la date de debut est la date à remplacer */
+			cour->DebutValidite = NouvelleDate; /* on la remplace par la nouvelle */
 		}
 		cour = cour->suivant;
 	}
@@ -99,10 +105,11 @@ void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate) {
 /**************************************************************************************************/
 
 void MessagesContenantMotif(liste_t * liste, char * motif) {
-	message_t * cour = liste->premier;
+	message_t * cour = liste->premier; /* pointeur sur le message traité */
 
-	while(cour != NULL) {
-		if(ContientMotif(cour->texte, motif)) {
+	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
+		if(ContientMotif(cour->texte, motif)) { /* si le texte du message contient le motif recherché */
+			/* on affiche le message avec ses dates de but et fin */
 			printf("%d %d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
 		}
 		cour = cour->suivant;
@@ -121,18 +128,20 @@ void MessagesContenantMotif(liste_t * liste, char * motif) {
 /**************************************************************************************************/
 
 int ContientMotif(char *s, char *motif) {
-	size_t	TailleS = strlen(s);
-	size_t	TailleMotif = strlen(motif);
-	size_t	i = 0, j = 0;
-	int		trouve = 0;
+	size_t	TailleS = strlen(s); /* taille de la chaine de caracteres dans laquelle on cherche le motif */
+	size_t	TailleMotif = strlen(motif); /* taille de la chaine de caracteres du motif */
+	size_t	i = 0, j = 0; /* variables d'avancement dans les chaines de caracteres */
+	int		trouve = 0; /* variable retour */
 
+	/* on teste si le motif se superpose depuis chaque caractere de s */
 	while(i < TailleS - TailleMotif && !trouve) {
 		j = 0;
 		
+		/* pour chaque lettre du motif, on verifie si elle se superpose à s */
 		while(j < TailleMotif && motif[j] == s[i+j]) {
 			j++;
 		}
-		/* le motif est trouvé si on sort de la boucle car plus de caracteres à tester */
+		/* le motif est trouvé si on sort de la boucle car on est arrivé à la fin du motif */
 		trouve = (j == TailleMotif);
 		i++;
 	}
