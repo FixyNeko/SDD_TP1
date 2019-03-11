@@ -26,6 +26,9 @@ void InitLCH(liste_t * liste) {
 /*																								  */
 /*	En sortie:	retourne l'adresse de la cellule crée											  */
 /*																								  */
+/*	Principe:	on alloue un espace mémoire qui contiendra un élément, et on le remplit 		  */
+/*				avec les valeurs données														  */
+/*																								  */
 /**************************************************************************************************/
 
 message_t *CreerCellule(int DebutValidite, int FinValidite, char * texte) {
@@ -64,6 +67,10 @@ void InsertionApres(message_t * message, message_t ** prec) {
 /*				valeur la date pour laquelle on cherche le precedant							  */
 /*																								  */
 /*	En sortie:	retourne le précédant de la valeur												  */
+/*																								  */
+/*	Principe: on cherche le dernier message de la liste chainée ayant une date de début			  */
+/*		inferieure à celle donnée. La liste étant triée, on la parcourt depuis son début en		  */
+/*		testant chaque élément																	  */
 /*																								  */
 /**************************************************************************************************/
 
