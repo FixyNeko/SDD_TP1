@@ -3,8 +3,8 @@
 int main(int argc, char ** argv) {
 	liste_t liste;
 
-	char* NomFichierLecture;
-	char* NomFichierEcriture;
+	char* NomFichierLecture; // Nom du fichier lu, passé en 1er paramètre du programme
+	char* NomFichierEcriture; // Nom du fichier écrit, passé en 2eme paramètre du programme
 
 	if(argc == 2) {
 		NomFichierLecture = argv[1];
@@ -17,6 +17,8 @@ int main(int argc, char ** argv) {
 	else {
 		exit(EXIT_FAILURE);
 	}
+
+	/* Traitement */
 
 	printf("\nchaine vide\n\n");
 	InitLCH(&liste);
@@ -38,6 +40,8 @@ int main(int argc, char ** argv) {
 	MessagesContenantMotif(&liste, "message depassé");
 
 	SupprimerLCH(&liste);
+
+	/* Traitement */
 
 	return 0;
 }
