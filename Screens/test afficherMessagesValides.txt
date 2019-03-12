@@ -1,0 +1,9 @@
+fichier vide
+
+
+fichier normal
+
+19980712 20190901 - message valide 1
+20120424 20420402 - message valide 2
+
+fichier depasses
