@@ -110,7 +110,7 @@ void MessagesContenantMotif(liste_t * liste, char * motif) {
 	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
 		if(ContientMotif(cour->texte, motif)) { /* si le texte du message contient le motif recherché */
 			/* on affiche le message avec ses dates de but et fin */
-			printf("%d %d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
+			printf("%08d %08d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
 		}
 		cour = cour->suivant;
 	}

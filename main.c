@@ -18,14 +18,25 @@ int main(int argc, char ** argv) {
 		exit(EXIT_FAILURE);
 	}
 
+	printf("\nchaine vide\n\n");
 	InitLCH(&liste);
-	LectureFichier(NomFichierLecture, &liste);
-	AfficherMessagesValides(&liste);
-	SupprimerMessagesObsoletes(&liste);
-	ParcoursLCH(&liste);
-	ModifierDateDebut(&liste, 20190207, 66006600);
-	MessagesContenantMotif(&liste, "Tp de");
-	SauvegardeLCH(NomFichierEcriture, &liste);
+	LectureFichier("Tests/FichierVide.txt", &liste);
+	MessagesContenantMotif(&liste, "message depassé");
+
+	SupprimerLCH(&liste);
+
+	printf("\nmotif vide\n\n");
+	InitLCH(&liste);
+	LectureFichier("Tests/FichierNormal.txt", &liste);
+	MessagesContenantMotif(&liste, "");
+
+	SupprimerLCH(&liste);
+
+	printf("\nmotif et chaine non vides\n\n");
+	InitLCH(&liste);
+	LectureFichier("Tests/FichierNormal.txt", &liste);
+	MessagesContenantMotif(&liste, "message depassé");
+
 	SupprimerLCH(&liste);
 
 	return 0;

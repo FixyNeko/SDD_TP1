@@ -27,7 +27,8 @@ void LectureFichier(char * NomFichier, liste_t * liste) {
 	fichier = fopen(NomFichier, "r"); /* on ouvre le fichier en lecture seule */
 
 	if(fichier != NULL) { /* si le fichier est valide */
-		while(0 == feof(fichier)) { /* tant qu'ona pas atteint la fin du fichier */
+		while(fgetc(fichier) != EOF) { /* tant qu'on a pas atteint la fin du fichier */
+			fseek(fichier, -1, SEEK_CUR);
 			/* on lit les dates de debut et fin */
 			fscanf(fichier, "%d %d ", &DateDebut, &DateFin);
 			/* on lit le reste de la ligne jusqu'à atteindre un retour à la ligne */
@@ -75,7 +76,7 @@ void SauvegardeLCH(char * NomFichier, liste_t * liste) {
 	if(fichier != NULL) { /* si le fichier est valide */
 		while(cour != NULL) { /* tant que l'element à traiter est un message */
 			/* on imprime dans le fichier dans le bon format les informations du message */
-			fprintf(fichier, "%d %d %s", cour->DebutValidite, cour->FinValidite, cour->texte);
+			fprintf(fichier, "%08d %08d %s", cour->DebutValidite, cour->FinValidite, cour->texte);
 			/* si le message a un suivant, on ajoute une ligne au fichier */
 			if(cour->suivant != NULL) {
 				fputc('\n', fichier);
