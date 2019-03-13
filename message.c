@@ -74,12 +74,18 @@ void SupprimerMessagesObsoletes(liste_t * liste) {
 
 /**************************************************************************************************/
 /*																								  */
-/* ModifierDateDebut		modifie la date de début de tous les messages ayant					  */
+/*	ModifierDateDebut		modifie la date de début de tous les messages ayant					  */
 /*							une date de début donnée											  */
 /*																								  */
-/*En entrée:	liste un pointeur sur une structure liste initialisée							  */
+/*	En entrée:	liste un pointeur sur une structure liste initialisée							  */
 /*				DateInitiale la date de début à remplacer										  */
 /*				NouvelleDate la nouvelle date remplaçant DateInitiale							  */
+/*																								  */
+/*	Principe: La liste chainée étant triée, on cherche le premier message dont la date est		  */
+/*		à changer. Si on l'a trouvé, on change toutes les dates des messages à changer et on	  */
+/*		enregistre l'adresse du dernier message qui a changé. On cherche ensuite où on doit		  */
+/*		placer la nouvelle date dans la liste chainée, et on fait les changements de pointeurs	  */
+/*		nécessaires pour garder l'ordre chronologique de début de message						  */
 /*																								  */
 /**************************************************************************************************/
 
@@ -89,13 +95,6 @@ void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate) {
 	message_t  * cour = liste->premier; /* pointeur sur le message traité */
 	message_t  * DebutChangement = NULL;
 	message_t  * FinChangement = NULL;
-
-/*	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
-/*		if(cour->DebutValidite == DateInitiale) { /* si la date de debut est la date à remplacer */
-/*			cour->DebutValidite = NouvelleDate; /* on la remplace par la nouvelle */
-/*		}
-/*		cour = cour->suivant;
-/*	} */
 
 	while(cour != NULL && cour->DebutValidite < DateInitiale) {
 		prec1 = &(cour->suivant);
