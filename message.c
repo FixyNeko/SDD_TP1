@@ -84,13 +84,39 @@ void SupprimerMessagesObsoletes(liste_t * liste) {
 /**************************************************************************************************/
 
 void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate) {
-	message_t * cour = liste->premier; /* pointeur sur le message traité */
+	message_t ** prec = NULL;
+	message_t ** prec1 = &(liste->premier);
+	message_t  * cour = liste->premier; /* pointeur sur le message traité */
+	message_t  * DebutChangement = NULL;
+	message_t  * FinChangement = NULL;
 
-	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
-		if(cour->DebutValidite == DateInitiale) { /* si la date de debut est la date à remplacer */
-			cour->DebutValidite = NouvelleDate; /* on la remplace par la nouvelle */
-		}
+/*	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
+/*		if(cour->DebutValidite == DateInitiale) { /* si la date de debut est la date à remplacer */
+/*			cour->DebutValidite = NouvelleDate; /* on la remplace par la nouvelle */
+/*		}
+/*		cour = cour->suivant;
+/*	} */
+
+	while(cour != NULL && cour->DebutValidite < DateInitiale) {
+		prec1 = &(cour->suivant);
 		cour = cour->suivant;
+	}
+
+	if(cour != NULL) {
+		DebutChangement = cour; /* debut des dates à changer */
+		FinChangement = cour;
+
+		while(cour != NULL && cour->DebutValidite == DateInitiale) {
+			cour->DebutValidite = NouvelleDate;
+			FinChangement = cour; /* fin des dates à changer */
+			cour = cour->suivant;
+		}
+
+		prec = RecherchePrec(liste, NouvelleDate);
+
+		*prec1 = FinChangement->suivant;
+		FinChangement->suivant = *prec;
+		*prec = DebutChangement;
 	}
 }
 
