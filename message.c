@@ -121,11 +121,14 @@ void ModifierDateDebut(liste_t * liste, int DateInitiale, int NouvelleDate) {
 
 /**************************************************************************************************/
 /*																								  */
-/* MessagesContenantMotif	affiche les messages contenant un motif (chaine de caractères) donné  */
+/*	MessagesContenantMotif	affiche les messages contenant un motif (chaine de caractères) donné  */
 /*							quelque soit la date												  */
 /*																								  */
-/*En entrée:	liste un pointeur sur une structure liste initialisée							  */
+/*	En entrée:	liste un pointeur sur une structure liste initialisée							  */
 /*				motif une chaine de caracteres													  */
+/*																								  */
+/*	Principe:	on regarde chaque message, et on teste si le message contient le motif. Si oui,	  */
+/*				on affiche le message															  */
 /*																								  */
 /**************************************************************************************************/
 
@@ -135,7 +138,7 @@ void MessagesContenantMotif(liste_t * liste, char * motif) {
 	while(cour != NULL) { /* tant qu'il reste des messages à traiter */
 		if(ContientMotif(cour->texte, motif)) { /* si le texte du message contient le motif recherché */
 			/* on affiche le message avec ses dates de but et fin */
-			printf("%08d %08d - %s\n", cour->DebutValidite, cour->FinValidite, cour ->texte);
+			printf("%08d %08d - %s\n", cour->DebutValidite, cour->FinValidite, cour->texte);
 		}
 		cour = cour->suivant;
 	}

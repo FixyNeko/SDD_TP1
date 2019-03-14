@@ -3,14 +3,15 @@ chaine vide
 
 motif vide
 
-00000000 00010000 - message depassé 2
-19851030 20151030 - message depassé 3
+00000000 00010000 - message depasse 2
+19851030 20151030 - message depasse 3
 19980712 20190901 - message valide 1
-20110429 20121221 - message dépassé 1
+20110429 20121221 - message depasse 1
 20241231 20250705 - message futur 1
 
 motif et chaine non vides
 
-00000000 00010000 - message depassé 2
-19851030 20151030 - message depassé 3
-20241231 20250705 - message futur 1
+00000000 00010000 - message depasse 2
+11111111 20151030 - message depasse 3
+20110429 20121221 - message depasse 1
+

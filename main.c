@@ -22,8 +22,7 @@ int main(int argc, char ** argv) {
 
 	InitLCH(&liste);
 	LectureFichier("Tests/FichierNormal.txt", &liste);
-	ModifierDateDebut(&liste, 19851030, 11111111);
-	AfficherMessagesValides(&liste);
+	ModifierDateDebut(&liste, 19851030, 20301030);
 
 	SupprimerLCH(&liste);
 
