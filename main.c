@@ -21,8 +21,11 @@ int main(int argc, char ** argv) {
 	/* Traitement */
 
 	InitLCH(&liste);
-	LectureFichier("Tests/FichierNormal.txt", &liste);
+	LectureFichier(NomFichierLecture, &liste);
 	ModifierDateDebut(&liste, 19851030, 20301030);
+	SupprimerMessagesObsoletes(&liste);
+	MessagesContenantMotif(&liste, "message");
+	SauvegardeLCH(NomFichierEcriture, &liste);
 
 	SupprimerLCH(&liste);
 
